@@ -1,6 +1,14 @@
 
 graph = {
-
+    "A" : {"B" : 2, "C" : 1, "F" : 20, "E" : 9, "D" : 3},
+    "B" : {"C" : 4, "E" : 3},
+    "C" : {"D" : 8},
+    "D" : {"E" : 7},
+    "E" : {"F" : 5},
+    "F" : {"G" : 2, "H" : 2},
+    "G" : {"F" : 1, "H" : 6},
+    "H" : {"F" : 9, "G" : 8},
+    "I" : {}
 }
 
 
@@ -77,3 +85,36 @@ def dijsktra(graph, initial, end):
     path = path[::-1]
     return path
 
+
+# Function to find the cost of the cheapest path.
+def cheapestCost(graph, initial, end):
+    shortest_paths = {initial: (None, 0)}
+    current_node = initial
+    visited = set()
+    
+    while current_node != end:
+        visited.add(current_node)
+        destinations = graph[current_node]
+        weight_to_current_node = shortest_paths[current_node][1]
+
+        for next_node in destinations:
+            weight = graph[current_node][next_node] + weight_to_current_node
+            if next_node not in shortest_paths:
+                shortest_paths[next_node] = (current_node, weight)
+            else:
+                current_shortest_weight = shortest_paths[next_node][1]
+                if current_shortest_weight > weight:
+                    shortest_paths[next_node] = (current_node, weight)
+
+        next_destinations = {node: shortest_paths[node] for node in shortest_paths if node not in visited}
+        if not next_destinations:
+            return "Route Not Possible"
+        current_node = min(next_destinations, key=lambda k: next_destinations[k][1])
+
+    return shortest_paths[f'{end}'][1]
+
+
+print(f'Shortest path between a and h is {breadth_first_search(graph, "A", "H")}')
+print(f'Cheapest path between a and h is {dijsktra(graph, "A", "H")}')
+
+print(f'The cost of going between a and h is {cheapestCost(graph, "A", "H")}')
