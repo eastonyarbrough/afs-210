@@ -68,12 +68,99 @@ end_time = time.time()
 
 print(f"The execution time is: {end_time-start_time}")
 
+# -- LAST ELEMENT AS PIVOT --
+import sys
+x=1500
+sys.setrecursionlimit(x)
+
+def last_sort(sequence):
+    length = len(sequence)
+    if length <= 1:
+        return sequence
+    else:
+        pivot = sequence.pop()
+
+    items_greater = []
+    items_lower = []
+
+    for item in sequence:
+        if item > pivot:
+            items_greater.append(item)
+        else:
+            items_lower.append(item)
+
+    return last_sort(items_lower) + [pivot] + last_sort(items_greater)
+
+print('Quick Sort (Last Elem Pivot):')
+
+start_time = time.time()
+last_sort(myList)
+end_time = time.time()
+
+print(f"The execution time is: {end_time-start_time}")
+
+# -- RANDOM ELEMENT AS PIVOT --
+def random_sort(sequence):
+    length = len(sequence)
+    if length <= 1:
+        return sequence
+    else:
+        pivot = sequence.pop(random.randint(0, len(sequence)-1))
+
+    items_greater = []
+    items_lower = []
+
+    for item in sequence:
+        if item > pivot:
+            items_greater.append(item)
+        else:
+            items_lower.append(item)
+
+    return last_sort(items_lower) + [pivot] + last_sort(items_greater)
+
+print('Quick Sort (Random Elem Pivot):')
+
+start_time = time.time()
+random_sort(myList)
+end_time = time.time()
+
+print(f"The execution time is: {end_time-start_time}")
+
 # -- MEAN AS PIVOT --
-def get_mean(list):
-    start = list[0]
-    middle = list[int(len(list) / 2)]
-    end = list[int(len(list)) - 1]
+def mean_sort(sequence):
+    start = sequence[0]
+    middle = sequence[int(len(sequence) / 2)]
+    end = sequence[int(len(sequence) - 1)]
 
-    return list.index(int((start + middle + end) / 3))
+    length = len(sequence)
+    if length <= 1:
+        return sequence
+    else:
+        pivot = sequence.pop(sequence.index(int((start + middle + end) / 3)))
 
-print(get_mean(myList))
+    items_greater = []
+    items_lower = []
+
+    for item in sequence:
+        if item > pivot:
+            items_greater.append(item)
+        else:
+            items_lower.append(item)
+
+    return last_sort(items_lower) + [pivot] + last_sort(items_greater)
+
+print('Quick Sort (Mean Pivot):')
+
+start_time = time.time()
+mean_sort(myList)
+end_time = time.time()
+
+print(f"The execution time is: {end_time-start_time}")
+
+# From what I can tell, testing with the different pivot methods that I found
+# online, It looks like the first element pivot is the most efficient. The
+# second most efficient that I found appears to be using the mean as the pivot
+# as it usually completes between 0.012 and 0.018. Using a random element as the
+# pivot can be efficient but is much more volatile than using the mean. The
+# worst efficiency I found was using the last element as the pivot as it
+# hovers between 0.025 and 0.041.
