@@ -158,7 +158,7 @@ end_time = time.time()
 print(f"The execution time is: {end_time-start_time}")
 
 # From what I can tell, testing with the different pivot methods that I found
-# online, It looks like the first element pivot is the most efficient. The
+# online, it looks like the first element pivot is the most efficient. The
 # second most efficient that I found appears to be using the mean as the pivot
 # as it usually completes between 0.012 and 0.018. Using a random element as the
 # pivot can be efficient but is much more volatile than using the mean. The
